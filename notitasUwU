@@ -1,0 +1,32 @@
+/*CSS: */
+
+.card {
+  width: 300px; /* Ajusta el ancho según tus necesidades */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.gallery img {
+  width: 100px; /* Ajusta el tamaño de las imágenes según tus necesidades */
+  height: 100px;
+  object-fit: cover;
+  margin: 5px;
+}
+
+
+
+/*HTML
+<div class="card">
+  <div class="gallery">
+    <img src="imagen1.jpg" alt="Imagen 1">
+    <img src="imagen2.jpg" alt="Imagen 2">
+    <img src="imagen3.jpg" alt="Imagen 3">
+  </div>
+</div>
+*/

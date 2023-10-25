@@ -1,0 +1,109 @@
+/*
+/* Color Theme Swatches in Hex */
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-1-hex { color: #F22EAE; }
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-2-hex { color: #F249E7; }
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-3-hex { color: #772B8C; }
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-4-hex { color: #221959; }
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-5-hex { color: #2C4373; }
+
+/* Color Theme Swatches in RGBA */
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-1-rgba { color: rgba(242, 46, 173, 1); }
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-2-rgba { color: rgba(242, 72, 230, 1); }
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-3-rgba { color: rgba(119, 43, 140, 1); }
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-4-rgba { color: rgba(33, 24, 89, 1); }
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-5-rgba { color: rgba(43, 67, 114, 1); }
+
+ Color Theme Swatches in HSLA 
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-1-hsla { color: hsla(320, 88, 56, 1); }
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-2-hsla { color: hsla(303, 86, 61, 1); }
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-3-hsla { color: hsla(286, 52, 36, 1); }
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-4-hsla { color: hsla(247, 56, 22, 1); }
+.Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-5-hsla { color: hsla(219, 44, 31, 1); }
+
+*/
+
+
+.selector-for-some-widget {
+    box-sizing: content-box;
+}
+
+.header{
+    background-color: #221959;
+}
+
+.link-header{
+    font-size: 0.999rem;
+}
+
+.contenido-inicio{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.card-publicacion{
+    box-shadow: 2px , 3px ,2px, 3px black;
+}
+
+.contenido{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.perfil{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(1fr,auto);
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+}
+
+.img_perfil{
+    width: 90px;
+    height: 90px;
+    border-radius: 50px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.footerClass{
+    background-color: #212529;
+    padding: 15px 3px;
+}
+
+.footerClass .Redes-Sociales{
+    text-align: center;
+    padding-bottom: 25px;
+    color: #2C4373;
+}
+
+.footerClass .Redes-Sociales a{
+    font-size: 24px;
+    color: inherit;
+    border: 1px solid #2C4373;
+    width: 40px;
+    height: 40px;
+    line-height: 38px;
+    display: inline-block;
+    border-radius: 50%;
+    margin: 0 8px;
+    opacity: 0.75;
+    margin-top: 25px;
+}
+
+.footerClass .Redes-Sociales a:hover{
+    color: #2857be;
+}
+
+.footerClass .derechos{
+    margin-top: 15px;
+    text-align: center;
+    font-size: 13px;
+    color: white;
+}

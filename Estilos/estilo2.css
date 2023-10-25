@@ -1,0 +1,18 @@
+.card {
+    width: 300px; /* Ajusta el ancho según tus necesidades */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .gallery img {
+    width: 100px; /* Ajusta el tamaño de las imágenes según tus necesidades */
+    height: 100px;
+    object-fit: cover;
+    margin: 5px;
+  }
