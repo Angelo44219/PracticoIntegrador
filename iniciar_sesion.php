@@ -41,40 +41,9 @@
     <link rel="stylesheet" href="./Estilos/Estilo.css" type="text/css">
   </head>
   <body>
-    <!----------[Navbar Rappi]------------>
-    <nav class="navbar navbar-expand-lg navbar-dark p-3 header">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">RapiBNB</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        
-          <div class=" collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ms-auto ">
-              <li class="nav-item link-header">
-                <a class="nav-link mx-2" aria-current="page" href="Index.php">Inicio</a>
-              </li>
-              <li class="nav-item link-header">
-                <a class="nav-link mx-2 active" href="./iniciar_sesion.php">Iniciar Sesion</a>
-              </li>
-              <li class="nav-item link-header">
-                <a class="nav-link mx-2" href="./registrarse.php">Registrarse</a>
-              </li>
-              <li class="nav-item dropdown link-header">
-                <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Alquileres
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href="#">Buscar alquiler</a></li>
-                  <li><a class="dropdown-item" href="#">Sobre nosotros</a></li>
-                  <li><a class="dropdown-item" href="#">Contactanos</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-        </nav>
-        <!------------------------------------>
+      <?php
+        include './cabecera.php';
+      ?>
         <!----------[Contenido iniciar sesion]--------->
         <div class="container">
           
@@ -126,20 +95,9 @@
               </div>
           </section>                          
         </div>
-        <footer class="footerClass">
-                  <div class="Redes-Sociales">
-                    <a href="https://www.twitter.com">
-                      <i class="fa-brands fa-square-x-twitter"></i>
-                    </a>
-                    <a href="https://www.facebook.com">
-                      <i class="fa-brands fa-facebook"></i>
-                    </a>
-                    <a href="https://www.instagram.com">
-                      <i class="fa-brands fa-instagram"></i>
-                    </a>
-                  </div>
-                  <p class="derechos">Rapibnb @ 2023, Todos los derechos reservados</p>
-          </footer>
+        <?php
+          include './pie.php';
+        ?>
         <!------------------------------------>
         <!---------------------------------------------------------------------------------------->
         <script src="https://kit.fontawesome.com/91e1aa86a3.js" crossorigin="anonymous"></script>                      

@@ -102,135 +102,91 @@
     <link rel="stylesheet" href="./Estilos/Estilo.css" type="text/css">
   </head>
   <body>
-    <!----------[Navbar Rappi]------------>
-    <nav class="navbar navbar-expand-lg navbar-dark p-3 header">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">RapiBNB</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+      <?php
+         include './cabecera.php';
+      ?>
+      <!----------[Contenido Registro]--------->
+      <main>
+            <div class="container">
+                <section class="vh-50">
+                      <div class="container py-5 h-390">
+                        <div class="row d-flex justify-content-center align-items-center">
+                          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                            <div class="card bg-light text-black" style="border-radius: 1rem;">
+                              <div class="card-body p-5 text-center">
 
-          <div class=" collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ms-auto ">
-              <li class="nav-item link-header">
-                <a class="nav-link mx-2 " aria-current="page" href="./Index.php">Inicio</a>
-              </li>
-              <li class="nav-item link-header">
-                <a class="nav-link mx-2" href="./iniciar_sesion.php">Iniciar Sesion</a>
-              </li>
-              <li class="nav-item link-header">
-                <a class="nav-link mx-2 active" href="./registrarse.php">Registrarse</a>
-              </li>
-              <li class="nav-item dropdown link-header">
-                <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Alquileres
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href="#">Buscar alquiler</a></li>
-                  <li><a class="dropdown-item" href="#">Sobre nosotros</a></li>
-                  <li><a class="dropdown-item" href="#">Contactanos</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-        </nav>
-        <!------------------------------------>
-        <!----------[Contenido Registro]--------->
-        <main>
-          <div class="container">
-              <section class="vh-50">
-                    <div class="container py-5 h-390">
-                      <div class="row d-flex justify-content-center align-items-center">
-                        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                          <div class="card bg-light text-black" style="border-radius: 1rem;">
-                            <div class="card-body p-5 text-center">
+                                <h2 class="mb-5">Registro</h2>  
 
-                              <h2 class="mb-5">Registro</h2>  
-
-                              <br>
-                              <?php
-                                  if(count($error)> 0){
-                                    echo"<div class='alert alert-danger' role='alert'>";
-                                    foreach($error as $err){
-                                      echo "<li> ". $err . "<br>";
+                                <br>
+                                <?php
+                                    if(count($error)> 0){
+                                      echo"<div class='alert alert-danger' role='alert'>";
+                                      foreach($error as $err){
+                                        echo "<li> ". $err . "<br>";
+                                      }
+                                      echo"</div>";  
                                     }
-                                    echo"</div>";  
-                                  }
-                              ?>
-                              <br>     
-                              <form class="mb-md-3 mt-md-4 pb-3" method="POST" action="./registrarse.php">
+                                ?>
+                                <br>     
+                                <form class="mb-md-3 mt-md-4 pb-3" method="POST" action="./registrarse.php">
 
-                                <div class="form-outline form-black mb-4">
-                                  <input type="text" id="nombre" class="form-control form-control-lg" name="nombre"/>
-                                  <label class="form-label" for="nombre">Nombre</label>
-                                </div>
+                                  <div class="form-outline form-black mb-4">
+                                    <input type="text" id="nombre" class="form-control form-control-lg" name="nombre"/>
+                                    <label class="form-label" for="nombre">Nombre</label>
+                                  </div>
 
-                                <div class="form-outline form-black mb-4">
-                                  <input type="text" id="apellido" class="form-control form-control-lg" name="apellido"/>
-                                  <label class="form-label" for="apellido">Apellido</label>
-                                </div>
+                                  <div class="form-outline form-black mb-4">
+                                    <input type="text" id="apellido" class="form-control form-control-lg" name="apellido"/>
+                                    <label class="form-label" for="apellido">Apellido</label>
+                                  </div>
 
 
-                                <div class="form-outline form-black mb-4">
-                                  <input type="number" id="dni" class="form-control form-control-lg" name="dni"/>
-                                  <label class="form-label" for="dni">Documento</label>
-                                </div>
+                                  <div class="form-outline form-black mb-4">
+                                    <input type="number" id="dni" class="form-control form-control-lg" name="dni"/>
+                                    <label class="form-label" for="dni">Documento</label>
+                                  </div>
 
 
-                                <div class="form-outline form-black mb-4">
-                                  <textarea id="biografia" class="form-control form-control-md" name="bio">
-                                  </textarea>
-                                  <label class="form-label" for="dni">Biografia</label>
-                                </div>
+                                  <div class="form-outline form-black mb-4">
+                                    <textarea id="biografia" class="form-control form-control-md" name="bio">
+                                    </textarea>
+                                    <label class="form-label" for="dni">Biografia</label>
+                                  </div>
 
 
-                                <div class="form-outline form-black mb-4">
-                                  <input type="file" id="foto" class="form-control form-control-md" name="foto"/>
-                                  <label class="form-label" for="dni">Fotografia de rostro</label>
-                                </div> 
+                                  <div class="form-outline form-black mb-4">
+                                    <input type="file" id="foto" class="form-control form-control-md" name="foto"/>
+                                    <label class="form-label" for="dni">Fotografia de rostro</label>
+                                  </div> 
 
-                                <div class="form-outline form-black mb-4">
-                                  <input type="email" id="email" class="form-control form-control-lg" name="email"/>
-                                  <label class="form-label" for="email">Email</label>
-                                </div>
+                                  <div class="form-outline form-black mb-4">
+                                    <input type="email" id="email" class="form-control form-control-lg" name="email"/>
+                                    <label class="form-label" for="email">Email</label>
+                                  </div>
 
-                                <div class="form-outline form-white mb-4">
-                                  <input type="password" id="contraseña" class="form-control form-control-lg" name="contrasena"/>
-                                  <label class="form-label" for="contraseña">Contraseña </label>
-                                </div>
+                                  <div class="form-outline form-white mb-4">
+                                    <input type="password" id="contraseña" class="form-control form-control-lg" name="contrasena"/>
+                                    <label class="form-label" for="contraseña">Contraseña </label>
+                                  </div>
 
-                                <!--<div class="form-outline form-white mb-4">
-                                  <input type="password" id="ccontraseña" class="form-control form-control-lg" name="concontrasena"/>
-                                  <label class="form-label" for="ccontraseña">Confirmar contraseña</label>
-                                </div>-->
+                                  <!--<div class="form-outline form-white mb-4">
+                                    <input type="password" id="ccontraseña" class="form-control form-control-lg" name="concontrasena"/>
+                                    <label class="form-label" for="ccontraseña">Confirmar contraseña</label>
+                                  </div>-->
 
-                                <input class="btn btn-outline-dark btn-lg px-5" type="submit" value="Registrarme" name="registrar">
-                              </form>
+                                  <input class="btn btn-outline-dark btn-lg px-5" type="submit" value="Registrarme" name="registrar">
+                                </form>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                </section>
-        </div>
-
-        <footer class="footerClass">
-            <div class="Redes-Sociales">
-                <a href="https://www.twitter.com">
-                  <i class="fa-brands fa-square-x-twitter"></i>
-                </a>
-                <a href="https://www.facebook.com">
-                  <i class="fa-brands fa-facebook"></i>
-                </a>
-                <a href="https://www.instagram.com">
-                  <i class="fa-brands fa-instagram"></i>
-                </a>
-            </div>
-            <p class="derechos">Rapibnb @ 2023, Todos los derechos reservados</p>
-        </footer> 
+                  </section>
+          </div>
         </main>
-                             
+        <?php
+          include './pie.php';
+        ?>                     
         <!------------------------------------>
         <!---------------------------------------------------------------------------------------->
       <script src="https://kit.fontawesome.com/91e1aa86a3.js" crossorigin="anonymous"></script>                          
