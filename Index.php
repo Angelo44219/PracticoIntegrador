@@ -14,15 +14,9 @@
       ?>
         <!----------[Contenido Rapi]--------->
         <main>
-           <!--<div class="container contenedor_inicio">
-             <div class="row row-cols-1">
-                  
-              </div>
-           </div>-->
-           <br>
            <div class="container">
-                <div class="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                  <div class="col-5">
+                
+                  <!--<div class="col">
                       <h3>Filtro de Busqueda</h3>
                       <br>
                       <form name="filtro" action="Index.php" method="get">
@@ -54,20 +48,22 @@
                           <br><br>
 
                       </form> 
-                   </div>
-                   <div class="col">
-                        <?php
-                          include './ver_publicacion.php';
-                        ?>
-                   </div>
+                   </div>-->
+                   
+                  
+                    <?php
+                       include './ver_publicacion.php';
+                    ?>
+                    
+                   
                 </div>
-           </div>
         </main>
         <?php
             include './pie.php';
         ?>
         <!------------------------------------>
     <!---------------------------------------------------------------------------------------->
+    <script src="./js/script.js"></script>
     <script src="https://kit.fontawesome.com/91e1aa86a3.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>

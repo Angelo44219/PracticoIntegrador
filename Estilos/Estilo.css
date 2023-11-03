@@ -21,7 +21,9 @@
 .Synthwave-City:-Vibrant-Neon-Cyberpunk-Pixel-Art-5-hsla { color: hsla(219, 44, 31, 1); }
 
 */
-
+a{
+    text-decoration: none !important;
+}
 
 .selector-for-some-widget {
     box-sizing: content-box;
@@ -74,8 +76,12 @@
 
 .footerClass{
     background-color: #212529;
-    padding: 15px 3px;
+    padding: 35px;
     margin-top: auto;
+    right: 0;
+    left: 0;
+    position: absolute;
+    bottom: 0;
 }
 
 .footerClass .Redes-Sociales{
@@ -119,7 +125,15 @@
 .search-container {
     text-align: center;
     margin-top: 100px;
+    align-items: center;
 }
+
+.busqueda{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 input[type=text] {
     width: 300px;
@@ -143,4 +157,103 @@ button {
 
 button:hover {
     background-color: #2C4373;
+}
+
+html{
+    height: 100%;
+    box-sizing: border-box;
+}
+
+body{
+    position: relative;
+    margin: 0;
+    min-height: 100%;
+    padding-bottom: 15.74rem;
+    box-sizing: inherit;
+}
+
+.sin_resultados{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+
+.img-fluid {
+    border: 3px solid #f4f4f4;
+}
+
+.card_usuario ,card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.card_usuario ,card-header {
+    border-radius: 15px 15px 0 0;
+}
+.img-fluid {
+    border: 3px solid #f4f4f4;
+}
+h2, h4, h5 {
+    font-weight: 500;
+}
+
+.container-verification {
+    font-family: Arial, sans-serif;
+    max-width: 300px;
+    margin: auto;
+}
+
+.upload-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    border: 2px solid #c1c1c1;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.upload-box:hover {
+    border-color: #8a8a8a;
+}
+
+.upload-label {
+    z-index: 1;
+}
+
+.upload-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    color: #c1c1c1;
+    font-size: 18px;
+}
+
+.upload-input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 0;
+}
+
+.bg-personalizado{
+    background-color: #221959;
+}
+
+.logo{
+    font-family: 'Cinzel', serif;
+    font-family: 'Lora', serif;
+    font-family: 'Noto Sans Osmanya', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }

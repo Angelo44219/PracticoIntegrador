@@ -20,7 +20,7 @@
                 <i class="fa-brands fa-instagram"></i>
             </a>
         </div>
-        <p class="derechos">Rapibnb @ 2023, Todos los derechos reservados</p>
+        <p class="derechos">RapiBnB @ 2023, Todos los derechos reservados</p>
     </footer>
     <!--[Scripts JS y demas]-->
     <script src="https://kit.fontawesome.com/91e1aa86a3.js" crossorigin="anonymous"></script>
