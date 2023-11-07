@@ -257,3 +257,7 @@ h2, h4, h5 {
     font-family: 'Noto Sans Osmanya', sans-serif;
     font-family: 'Raleway', sans-serif;
 }
+
+a {
+    text-decoration: none !important;
+}

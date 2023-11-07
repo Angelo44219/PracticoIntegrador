@@ -236,10 +236,6 @@
                         <label class="form-check-label" for="luz">Merienda</label>
                     </div>
                     
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="garage" name="servicios[]" value="Garage">
-                        <label class="form-check-label" for="garage">Merienda</label>
-                    </div>
                     <br><br>
                     <div class="text-center">
                         <button type="submit" class="btn btn-dark btn-create-offer btn-block">Crear Oferta</button>

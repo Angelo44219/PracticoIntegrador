@@ -5,10 +5,10 @@
     $terminoBusqueda = $_GET['termino'];
     $buscador=!empty($_GET['buscador']) ? $_GET['buscador'] : null;
     if(empty($terminoBusqueda)){
-      $consulta="SELECT p.id,p.titulo, p.descripcion, p.ubicacion,e.etiqueta,p.costo,i.imagen,u.nombre,u.apellido,p.fecha_subida FROM publicacion p INNER JOIN alquiler a ON p.id=a.id_publicacion INNER JOIN imagen i ON p.id=i.id_publicacion INNER JOIN usuario u ON p.id_usuario=u.id INNER JOIN etiqueta e ON p.id=e.id_etiqueta WHERE p.estado=1";
+      $consulta="SELECT p.id,p.titulo, p.descripcion, p.ubicacion,p.costo,p.fotos,p.etiqueta,u.nombre,u.apellido,p.fecha_subida FROM publicacion p INNER JOIN usuario u ON p.id_usuario=u.id  WHERE p.estado=1";
     }else{
-      $consulta="SELECT p.id,p.titulo, p.descripcion, p.ubicacion,e.etiqueta,p.costo,i.imagen, u.nombre ,u.apellido,p.fecha_subida FROM publicacion p INNER JOIN alquiler a ON p.id=a.id_publicacion INNER JOIN imagen i ON p.id=i.id_publicacion INNER JOIN usuario u ON p.id_usuario=u.id INNER JOIN etiqueta e ON p.id=e.id_etiqueta WHERE p.estado=1 
-        AND p.titulo LIKE '%$terminoBusqueda%' OR p.descripcion LIKE '%$terminoBusqueda%' OR p.ubicacion LIKE '%$terminoBusqueda%' OR e.etiqueta LIKE '%$terminoBusqueda%';";
+      $consulta="SELECT p.id,p.titulo, p.descripcion, p.ubicacion,p.costo,p.fotos,p.etiqueta,u.nombre,u.apellido,p.fecha_subida FROM publicacion p INNER JOIN usuario u ON p.id_usuario=u.id  WHERE p.estado=1 
+        AND p.titulo LIKE '%$terminoBusqueda%' OR p.descripcion LIKE '%$terminoBusqueda%' OR p.ubicacion LIKE '%$terminoBusqueda%' OR p.etiqueta LIKE '%$terminoBusqueda%';";
     }
 
     $resultado=mysqli_query($conexion,$consulta);
@@ -21,7 +21,7 @@
           echo  "<div class='card mb-4'>";
             echo "<div class='row g-0'>";
               echo "<div class='col-md-4'>";
-                echo  "<img src='".htmlspecialchars($fila['imagen'])."' class='img-thumbnail img-fluid' alt='...' width='100%' height='225'>";
+                echo  "<img src='".htmlspecialchars($fila['fotos'])."' class='img-thumbnail img-fluid' alt='...' width='100%' height='225'>";
               echo "</div>";
 
               echo "<div class='col-md-8'>";

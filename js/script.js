@@ -43,14 +43,12 @@ function cargarElementos(pagina) {
 
 cargarElementos(paginaActual);
 
-// Configurar el botón de eliminación de oferta
-$(document).on("click", ".eliminar-oferta-button", function () {
-    var id_publicacion = $(this).data('id');
-    $("#confirmDeleteButton").attr("href", "detalles_publicacion.php?id=" + id_publicacion + "&action=delete");
-});
 
-// Configurar el botón de eliminación de reseña
-$(document).on("click", ".eliminar-resena-button", function () {
-    var resenaId = $(this).data('resenawid');
-    $("#confirmDeleteReviewButton").attr("href", "detalles_publicacion.php?id=<?php echo $id_publicacion; ?>&action=deleteResena&resenaId=" + resenaId);
-});
+
+var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var userId = button.getAttribute('data-userid');
+            var modalInput = deleteModal.querySelector('#deleteUserId');
+            modalInput.value = userId;
+        });

@@ -11,7 +11,7 @@
         $stmt_oferta->execute();
         $result_oferta = $stmt_oferta->get_result();
         $row_oferta = $result_oferta->fetch_assoc();
-        $id_oferta = $row_oferta['id_publicacion'];
+        $id_publicacion = $row_oferta['id_publicacion'];
         $stmt_oferta->close();
     
         $query = "UPDATE alquiler SET estado_alquiler = 'aceptado' WHERE id = ?";

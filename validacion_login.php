@@ -6,7 +6,7 @@
         $contrasena=$_POST['contrasena'];
     }
 
-    $consulta="SELECT id,nombre,apellido,contrasena,rol,certificacion FROM usuarios WHERE email=?";
+    $consulta="SELECT id,nombre,apellido,contrasena,admin,certificacion FROM usuario WHERE email=?";
 
     if($stmt=mysqli_prepare($conexion,$consulta)){
         mysqli_stmt_bind_param($stmt,"s",$correo);

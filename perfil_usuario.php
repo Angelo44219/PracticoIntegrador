@@ -60,10 +60,10 @@
 
     <div class="container mt-5">
         <div class="row">
-            <div class="col-md-3">
-                <div class="card"> 
+            <div class="col-md-12">
+                <div class="card">
                     <div class="card-body text-center">
-                        <img src="<?php echo $foto_perfil; ?>" alt="Foto de Perfil" class="img-fluid rounded-circle mb-3" width="150">
+                        <img src="<?php echo $foto_perfil; ?>" alt="Foto de Perfil" class="img-fluid rounded-circle mb-3" width="150" height="150">
                         <h4><?php echo $nombre . ' ' . $apellido; ?></h4>
                         <?php 
                         echo ($usuario["certificacion"] == 1) ? '<img height=40 width=40 src="./Imagenes/verify_4458197.png" title="Usuario verificado">' : '';
@@ -95,7 +95,7 @@
                         <b>Verifica tu cuenta</b>
                     </div>
                     <div class="card-body card_usuario">
-                        <form action="procesar_verificacion.php" method="post" enctype="multipart/form-data">
+                        <form action="procesar_solicitud.php" method="post" enctype="multipart/form-data">
                             <div class="upload-box mb-3">
                                 <label class="upload-label" for="dni_frente">Foto Frente DNI</label>
                                 <span class="upload-icon"><i class="fa-solid fa-camera"></i></span>
@@ -131,7 +131,7 @@
                 ?>
                 <?php endif; ?>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="card mb-4 card_usuario"> 
                     <div class="card-header bg-dark text-white">
                         <h2>Perfil de Usuario</h2>

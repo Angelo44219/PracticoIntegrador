@@ -12,8 +12,8 @@
 </head>
 <body>
     
-    <main>
-            <nav class="navbar navbar-expand-lg navbar-dark p-3 header">
+    <main class="sticky-top">
+            <nav class="navbar navbar-expand-lg navbar-dark p-3 header sticky-top">
                 <div class="container-fluid">
                     <a class="navbar-brand logo" href="./Index.php"><i class="fa-solid fa-house-chimney"></i> RapiBNB</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,7 @@
                         <?php
                                 // Botón "Admin" con icono de una tuerca
                                 if (isset($_SESSION['admin']) && $_SESSION['admin'] == 1) {
-                                    echo '<li class="nav-item"><a class="nav-link" href="administrador.php"><i class="fa-solid fa-gears"></i> Panel de Administración</a></li>';
+                                    echo '<li class="nav-item"><a class="nav-link" href="index_administrador.php"><i class="fa-solid fa-gears"></i> Panel de Administración</a></li>';
                                 }
 
                                 // Botón de usuario (person) en el lado derecho
@@ -71,6 +71,7 @@
             </nav>        
     </main>
     <!--[Scripts JS y demas]-->
+    <script src="./js/script.js"></script>
     <script src="https://kit.fontawesome.com/91e1aa86a3.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>

@@ -10,11 +10,11 @@
         $stmt_oferta->execute();
         $result_oferta = $stmt_oferta->get_result();
         $row_oferta = $result_oferta->fetch_assoc();
-        $id_oferta = $row_oferta['id_publicacion'];
+        $id_publicacion = $row_oferta['id_publicacion'];
         $stmt_oferta->close();
     
         // Eliminar la solicitud
-        $query = "DELETE FROM aplicaciones_alquiler WHERE id = ?";
+        $query = "DELETE FROM alquiler WHERE id = ?";
         $stmt = $conexion->prepare($query);
         $stmt->bind_param("i", $id_solicitud);
         if ($stmt->execute()) {
