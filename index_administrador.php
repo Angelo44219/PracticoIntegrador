@@ -23,13 +23,13 @@
         }
 
         // Actualizar el estado de verificación y la fecha de verificación del usuario en la base de datos
-        $query = "UPDATE usuario SET certificacion = ?, fecha_vencimiento = ? WHERE id = ?";
-        $stmt = mysqli_prepare($conexion, $query);
+        $consultar_actualizacion = "UPDATE usuario SET certificacion = ?, fecha_vencimiento = ? WHERE id = ?";
+        $actualizar_verificacion= mysqli_prepare($conexion, $query);
 
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "iss", $verificado, $fecha_verificacion, $user_id);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_close($stmt);
+        if ($actualizar_verificacion) {
+            mysqli_stmt_bind_param($actualizar_verificacion, "iss", $verificado, $fecha_verificacion, $user_id);
+            mysqli_stmt_execute($actualizar_verificacion);
+            mysqli_stmt_close($actualizar_verificacion);
         }
     }
 
@@ -39,54 +39,54 @@
 
 
         // Eliminar respuestas asociadas a las reseñas del usuario
-        $query = "DELETE FROM respuesta_resena WHERE id_resena IN (SELECT id FROM resenia WHERE id_usuario = ?)";
-        $stmt = mysqli_prepare($conexion, $query);
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "i", $user_id);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_close($stmt);
+        $consultar_respuesta = "DELETE FROM respuesta_resena WHERE id_resena IN (SELECT id FROM resena WHERE id_usuario = ?)";
+        $eliminar_respuesta = mysqli_prepare($conexion, $consultar_respuesta);
+        if ($eliminar_respuesta) {
+            mysqli_stmt_bind_param($eliminar_respuesta, "i", $user_id);
+            mysqli_stmt_execute($eliminar_respuesta);
+            mysqli_stmt_close($eliminar_respuesta);
         }
 
 
         // Eliminar reseñas asociadas al usuario
-        $query = "DELETE FROM resenia WHERE id_usuario = ?";
-        $stmt = mysqli_prepare($conexion, $query);
+        $consultar_resena = "DELETE FROM resena WHERE id_usuario = ?";
+        $eliminar_resena= mysqli_prepare($conexion, $consultar_resena);
         
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "i", $user_id);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_close($stmt);
+        if ($eliminar_resena) {
+            mysqli_stmt_bind_param($eliminar_resena, "i", $user_id);
+            mysqli_stmt_execute($eliminar_resena);
+            mysqli_stmt_close($eliminar_resena);
         }
 
-        // Eliminar alquileres asociados al usuario
-        $query = "DELETE FROM publicacion WHERE id_usuario = ?";
-        $stmt = mysqli_prepare($conexion, $query);
+        // Eliminar publicaciones asociados al usuario
+        $consultar_publicaciones = "DELETE FROM publicacion WHERE id_usuario = ?";
+        $eliminar_publicaciones = mysqli_prepare($conexion, $consultar_publicaciones);
         
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "i", $user_id);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_close($stmt);
+        if ($eliminar_publicaciones) {
+            mysqli_stmt_bind_param($eliminar_publicaciones, "i", $user_id);
+            mysqli_stmt_execute($eliminar_publicaciones);
+            mysqli_stmt_close($eliminar_publicaciones);
         }
 
         // Eliminar el usuario
-        $query = "DELETE FROM usuario WHERE id = ?";
-        $stmt = mysqli_prepare($conexion, $query);
+        $consultar_usuario = "DELETE FROM usuario WHERE id = ?";
+        $eliminar_usuario = mysqli_prepare($conexion, $consultar_usuario);
         
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "i", $user_id);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_close($stmt);
+        if ($eliminar_usuario) {
+            mysqli_stmt_bind_param($eliminar_usuario, "i", $user_id);
+            mysqli_stmt_execute($eliminar_usuario);
+            mysqli_stmt_close($eliminar_usuario);
         }
     }
 
-    $query = "SELECT u.id,u.foto,u.nombre, u.apellido, u.email, u.certificacion, u.fecha_vencimiento, 
+    $consultar_solicitudes = "SELECT u.id,u.foto,u.nombre, u.apellido, u.email, u.certificacion, u.fecha_vencimiento,u.admin,
           CASE WHEN s.id_usuario IS NOT NULL THEN 1 ELSE 0 END AS tiene_solicitud
           FROM usuario u
           LEFT JOIN solicitud s ON u.id = s.id_usuario
           ORDER BY tiene_solicitud DESC, u.id ASC";
-    $result = mysqli_query($conexion, $query);
+    $resultados_solicitudes = mysqli_query($conexion, $consultar_solicitudes);
 
-    $fecha_manana = date("Y-m-d", strtotime("+1 day"));
+    $fecha_siguiente = date("Y-m-d", strtotime("+1 day"));
 
 ?>
 
@@ -102,68 +102,73 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Lora:ital@0;1&family=Noto+Sans+Osmanya&family=Raleway:ital,wght@0,100;0,300;0,400;0,500;1,100&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="contenido_perfiles">
     <?php
         include './cabecera.php';
     ?>
 
-    <div class="container mt-5 table-responsive">
-        <table class="table table-hover align-middle text-center text-capitalize table-bordered">
-            <thead class="table table-dark table-active">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Email</th>
-                    <th>Certificacion</th>
-                    <th>Fecha vencimiento</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<tr>";
-                        echo "<td><a href='perfil_usuario.php?id={$row['id']}'>{$row['id']}</a></td>";
-                        echo "<td>{$row['nombre']}</td>";
-                        echo "<td>{$row['apellido']}</td>";
-                        echo "<td>{$row['email']}</td>";
-                        echo "<td>{$row['certificacion']}</td>";
-                        echo "<td>{$row['fecha_vencimiento']}</td>";
-                        echo "<td>";
-                        echo '<form method="post">';
-                        echo '<input type="hidden" name="id_usuario" value="' . $row['id'] . '">';
-                        echo '<select name="verificado" class="form-select">';
-                        echo '<option value="0" ' . ($row['certificacion'] == 0 ? 'selected' : '') . '>No verificado</option>';
-                        echo '<option value="1" ' . ($row['certificacion'] == 1 ? 'selected' : '') . '>Verificado</option>';
-                        echo '</select>';
-                        echo '<div class="mb-3">';
-                        echo '<label for="fecha_vencimiento" class="form-label">Fecha de Vencimiento:</label>';
-                        echo '<input type="date" class="form-control" name="fecha_vencimiento" value="' . (empty($row['fecha_vencimiento']) ? $fecha_manana : $row['fecha_vencimiento']) . '" min="' . $fecha_manana . '">';
-                        echo '</div>';
-                        echo '<div class="text-center">';
-                        echo '<button type="submit" class="btn btn-dark">Guardar</button>';
-                        echo '</form>';
-                        echo '<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-userid="' . $row['id'] . '">Eliminar Usuario</button>';
-                        
-                        // Agregar botón para ver ofertas del usuario
-                        echo '<a href="ofertas_usuario.php?id_usuario=' . $row['id'] . '" class="btn btn-info">Ver Ofertas</a>';
-                        // Agregar el botón "Ver solicitud" aquí
-                        $query_verificacion = "SELECT * FROM solicitud WHERE id_usuario = " . $row['id'];
-                        $result_verificacion = mysqli_query($conexion, $query_verificacion);
-                        if (mysqli_num_rows($result_verificacion) > 0) {
-                            echo '<a href="solicitud_verificacion.php?id_usuario=' . $row['id'] . '" class="btn btn-warning">Ver Solicitud</a>';
-                        } else {
-                            // Si no hay solicitud, mostrar el botón en gris y deshabilitado
-                            echo '<a href="#" class="btn btn-warning disabled">Ver Solicitud</a>';
-                        }
-                        echo '</div>';
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                ?>
-            </tbody>
-        </table>
+    <div class="container mt-5 pagina-perfiles">
+        <div class="row">
+            <h1 class="text-center text-white mt-2 mb-4">Usuarios Registrados</h1>
+            <br>
+            <?php
+                while ($solicitud = mysqli_fetch_assoc($resultados_solicitudes)) {
+                    echo "<div class=''col-md-12>";
+                        echo "<div class='card cabecera-perfil'>";
+                           echo "<div class='card-body cuerpo-perfil'>";
+                                echo "<div class='row'>";
+                                    echo "
+                                        <div class='col-md-4 col-12'>
+                                            <div class='perfil-imagen mr-4'><img src='".$solicitud['foto']."'></div>
+                                        </div>";
+                                        echo "<div class='col-md-8 col-12'>
+                                            <p><strong>Id del usuario: </strong><a href='perfil_usuario.php?id={$solicitud['id']}'>{$solicitud['id']}</a></p>
+                                            <h4 class='m-t-0 m-b-0'><strong>".$solicitud['nombre']." ".$solicitud['apellido']."</strong></h4>
+                                            <p><strong>Correo electronico: </strong>".$solicitud['email']."</p>
+                                            <p><strong>Certificacion: </strong>".$solicitud['certificacion']."</p>
+                                            <p><strong>Administrador: </strong>".$solicitud['admin']."</p>
+                                            <p><strong>Fecha de vencimiento: </strong>".$solicitud['fecha_vencimiento']."</p>
+                                            <div class='mr-10'>";
+                                                echo '<form method="post">';
+                                                    echo '<input type="hidden" name="id_usuario" value="' . $solicitud['id'] . '">';
+                                                    echo '<select name="verificado" class="form-select">';
+                                                    echo '<option value="0" ' . ($solicitud['certificacion'] == 0 ? 'selected' : '') . '>No verificado</option>';
+                                                    echo '<option value="1" ' . ($solicitud['certificacion'] == 1 ? 'selected' : '') . '>Verificado</option>';
+                                                    echo '</select>';
+                                                    echo '<div class="mb-3">';
+                                                    echo '<label for="fecha_vencimiento" class="form-label">Fecha de Vencimiento:</label>';
+                                                    echo '<input type="date" class="form-control" name="fecha_vencimiento" value="' . (empty($solicitud['fecha_vencimiento']) ? $fecha_siguiente : $solicitud['fecha_vencimiento']) . '" min="' . $fecha_siguiente . '">';
+                                                    echo '</div>';
+                                                    echo '<div class="text-center">';
+                                                        echo '<button type="submit" class="btn btn-dark"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>';
+                                                    echo '</div>';
+                                                echo '</form>';
+                                                echo '<br>';
+                                                echo '<div class="text-center pr-4">';
+                                                    echo '<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-userid="' . $solicitud['id'] . '"><i class="fa-solid fa-trash"></i> Eliminar</button>&nbsp;';
+                                    
+                                                    // Agregar botón para ver ofertas del usuario
+                                                    echo '<a href="ofertas_usuario.php?id_usuario=' . $solicitud['id'] . '" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i> Publicaciones</a>&nbsp;';
+                                                    // Agregar el botón "Ver solicitud" aquí
+                                                    $ver_solicitud = "SELECT * FROM solicitud WHERE id_usuario = ". $solicitud['id'];
+                                                    $resultado_solicitud = mysqli_query($conexion, $ver_solicitud);
+                                                    if (mysqli_num_rows($resultado_solicitud) > 0) {
+                                                                echo '<a href="solicitud_verificacion.php?id_usuario=' . $solicitud['id'] . '" class="btn btn-warning"><i class="fa-solid fa-list-check"></i> Solicitud</a>&nbsp;';
+                                                    } else {
+                                                                // Si no hay solicitud, mostrar el botón en gris y deshabilitado
+                                                                echo '<a href="#" class="btn btn-warning disabled"><i class="fa-solid fa-list-check"></i> Solicitud</a>&nbsp;';
+                                                    }
+                                                echo '</div>';
+                                            echo"</div>";
+                                        "</div>";
+                                echo "</div>";
+                            echo "</div>";
+                        echo "</div>";
+                    echo "</div>";
+                }
+            ?>
+        </div>
+       
     </div>
     <!-- Modal -->
         <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -186,13 +191,21 @@
                 </div>
             </div>
         </div>
-
+       <!--[Modal edicion]-->
     <?php
         include './pie.php';
     ?>
 
     <!--[Scripts]-->
-    <script src="./js/script.js"></script>
+    <script>
+    var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var userId = button.getAttribute('data-userid');
+            var modalInput = deleteModal.querySelector('#deleteUserId');
+            modalInput.value = userId;
+        });
+    </script>
     <script src="https://kit.fontawesome.com/91e1aa86a3.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>

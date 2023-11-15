@@ -41,7 +41,7 @@
         // Obtener la fecha de mañana
         $hoy = date('Y-m-d');
 
-        $fecha_inicio_min = ($alquiler["fecha_inicio"] && $alquiler["fecha_inicio"] > $hoy) ? $alquiler["fecha_inicio"] : $hoy;
+        $fecha_inicio_min = (!empty($alquiler["fecha_inicio"]) && $alquiler["fecha_inicio"] > $hoy) ? $alquiler["fecha_inicio"] : $hoy;
         $fecha_fin_max = $alquiler["fecha_fin"] ?? '2099-12-31'; // Puedes usar una fecha muy lejana como valor predeterminado si no hay fecha fin
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -141,8 +141,8 @@
         var costoPorDia = <?php echo $alquiler["costo"]; ?>;
 
         function calcularPrecioTotal() {
-            var fechaInicio = new Date($('#fecha_inicio').val());
-            var fechaFin = new Date($('#fecha_fin').val());
+            var fechaInicio = new Date($('#fecha_inicio').value());
+            var fechaFin = new Date($('#fecha_fin').value());
 
             var diferencia = (fechaFin - fechaInicio) / (1000 * 60 * 60 * 24) + 1;
 

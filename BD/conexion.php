@@ -4,8 +4,7 @@
     $contraseña='';
     $base="rappibnb";
 
-    $conexion=
-    mysqli_connect($servidor,$usuario,$contraseña,$base);
+    $conexion=mysqli_connect($servidor,$usuario,$contraseña,$base);
 
     if(!$conexion){
         die("Conexion Fallida: ".mysqli_connect_error());

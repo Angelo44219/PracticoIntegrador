@@ -7,8 +7,9 @@
 </head>
 <body>
     <?php
-        require_once './cabecera.php';
         require_once './BD/conexion.php';
+        include './cabecera.php';
+        
 
         function verificarExtensionImagen($img) {
             $formatosPermitidos = ['jpg', 'jpeg', 'png', 'avif', 'webp'];
@@ -67,6 +68,7 @@
                 $resultado_verificado = mysqli_query($conexion, $consulta_verificado);
                 $usuario = mysqli_fetch_assoc($resultado_verificado);
 
+                
                 if ($usuario['certificacion'] == 0) {
                     $consulta_oferta_activa = "SELECT COUNT(*) as total FROM publicacion WHERE id_usuario= $id_usuario AND estado = 1";
                     $resultado_oferta_activa = mysqli_query($conexion, $consulta_oferta_activa);
@@ -104,6 +106,8 @@
                 }
             }
         }
+
+        
     ?>
     <div class="container mt-4">
         <h1 class="text">Crear una nueva publicacion</h1>
@@ -196,20 +200,6 @@
                         <label class="form-check-label" for="internet">Internet</label>
                     </div>
                     
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="desayuno" name="servicios[]" value="Desayuno">
-                        <label class="form-check-label" for="desayuno">Desayuno</label>
-                    </div>
-                    
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="merienda" name="servicios[]" value="Merienda">
-                        <label class="form-check-label" for="merienda">Merienda</label>
-                    </div>
-                    
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="cena" name="servicios[]" value="Cena">
-                        <label class="form-check-label" for="cena">Cena</label>
-                    </div>
                     
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="agua" name="servicios[]" value="Agua">
@@ -232,8 +222,13 @@
                     </div>
                     
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="luz" name="servicios[]" value="Luz">
-                        <label class="form-check-label" for="luz">Merienda</label>
+                        <input class="form-check-input" type="checkbox" id="baño" name="servicios[]" value="Baño">
+                        <label class="form-check-label" for="baño">Living</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="baño" name="servicios[]" value="Baño">
+                        <label class="form-check-label" for="baño">Comedor</label>
                     </div>
                     
                     <br><br>

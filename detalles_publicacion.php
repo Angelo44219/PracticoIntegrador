@@ -5,16 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalles del Alquiler</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../Estilos/Estilo.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
-	<style>
-		a {
-			text-decoration: none !important;
-		}
-	</style>
+	<link rel="stylesheet" href="../Estilos/Estilo.css" type="text/css">
 </head>
 <body>
 
@@ -68,13 +59,13 @@ if(isset($_SESSION['id'])) {
 	}
 }
 // Función para mostrar las estrellas
-function mostrarEstrellas($puntuacion) {
+function Estrellas($puntuacion) {
     $estrellas = '';
     for ($i = 1; $i <= 5; $i++) {
         if ($i <= $puntuacion) {
-            $estrellas .= '<i class="fa-solid fa-star"></i>';
+            $estrellas .= '<box-icon type="solid"   name="star" color="yellow"></box-icon>';
         } else {
-            $estrellas .= '<i class="fa-regular fa-star"></i>';
+            $estrellas .= '<box-icon type="regular" name="star" color="yellow"></box-icon>';
         }
     }
     return $estrellas;
@@ -85,8 +76,8 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     $yaHaResenado = false;
 
     // Verificar si el usuario ya ha realizado una reseña en esta oferta
-    $sql_verificar_resena = "SELECT COUNT(*) FROM resenia 
-    INNER JOIN usuario ON resenia.id_usuario=usuario.id
+    $sql_verificar_resena = "SELECT COUNT(*) FROM resena r 
+    INNER JOIN usuario ON r.id_usuario=usuario.id
     WHERE id_publicacion = ? AND id_usuario = ? AND usuario.certificacion=1";
     if ($stmt_verificar_resena = mysqli_prepare($conexion, $sql_verificar_resena)) {
         mysqli_stmt_bind_param($stmt_verificar_resena, "ii", $id_publicacion, $_SESSION['id']);
@@ -104,10 +95,10 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
 
 
     // Verificar si el usuario ya ha realizado una reseña en esta oferta y si está verificado
-    $sql_verificar_resena_y_usuario = "SELECT COUNT(resenia.id) 
-    FROM resenia 
-    INNER JOIN usuario ON resenia.id_usuario = usuario.id 
-    WHERE resenia.id_publicacion = ? AND resenia.id_usuario = ? AND usuario.certificacion = 1";
+    $sql_verificar_resena_y_usuario = "SELECT COUNT(resena.id) 
+    FROM resena 
+    INNER JOIN usuario ON resena.id_usuario = usuario.id 
+    WHERE resena.id_publicacion = ? AND resena.id_usuario = ? AND usuario.certificacion = 1";
 
     $yaHaResenado = false;
     $puedeResenar = false;
@@ -146,23 +137,6 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
         }
     }
 
-
-    // Si se presiona el botón "Eliminar Reseña"
-    if (isset($_GET["action"]) && $_GET["action"] == "deleteReview" && isset($_GET["reviewId"]) && is_numeric($_GET["reviewId"])) {
-        $reviewId = $_GET["reviewId"];
-        $sql_delete_review = "DELETE FROM resenia WHERE id = ? AND id_usuario = ?";
-        if ($stmt_delete_review = mysqli_prepare($conexion, $sql_delete_review)) {
-            mysqli_stmt_bind_param($stmt_delete_review, "ii", $reviewId, $_SESSION['id']);
-            if (mysqli_stmt_execute($stmt_delete_review)) {
-                echo '<script>window.location.href = "detalles_alquiler.php?id=' . $id_publicacion . '";</script>';
-                exit();
-            } else {
-                echo '<div class="alert alert-danger" role="alert">Error al eliminar la reseña: ' . mysqli_error($conexion) . '</div>';
-            }
-            mysqli_stmt_close($stmt_delete_review);
-        }
-    }
-
     // Si se presiona el botón "Eliminar Oferta"
     if (isset($_GET["action"]) && $_GET["action"] == "delete") {
         $sql_delete_offer = "DELETE FROM publicacion WHERE id = ?";
@@ -179,7 +153,7 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     }
 
 	// Código para calcular la puntuación general
-    $sql_puntuacion = "SELECT AVG(puntuacion) as promedio FROM resenia WHERE id_publicacion = ?";
+    $sql_puntuacion = "SELECT AVG(puntuacion) as promedio FROM resena WHERE id_publicacion = ?";
     $puntuacion_general = 0;
     if ($stmt_puntuacion = mysqli_prepare($conexion, $sql_puntuacion)) {
         mysqli_stmt_bind_param($stmt_puntuacion, "i", $id_publicacion);
@@ -218,7 +192,7 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
 
                 echo '<div class="container mt-4">';
 				echo '<h1>' . htmlspecialchars($fila["titulo"]) . '</h1>';
-				echo '<p><strong>Puntuación general:</strong> ' . mostrarEstrellas($puntuacion_general) . '</p>'; // Mostrar puntuación general
+				echo '<p><strong>Puntuación general:</strong> ' . Estrellas($puntuacion_general) . '</p>'; // Mostrar puntuación general
 				echo '<p><strong>Descripción:</strong> ' . htmlspecialchars($fila["descripcion"]) . '</p>';
                 echo '<p><strong>Ubicación:</strong> ' . htmlspecialchars($fila["ubicacion"]) . '</p>';
                 $etiquetas = explode(',', $fila["etiqueta"]);
@@ -232,6 +206,9 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
                 echo '<p><strong>Tiempo Mínimo de Permanencia:</strong> ' . $fila["tiempo_minimo"] . ' días</p>';
                 echo '<p><strong>Tiempo Máximo de Permanencia:</strong> ' . $fila["tiempo_maximo"] . ' días</p>';
                 echo '<p><strong>Cupo de Personas:</strong> ' . $fila["cupo"] . '</p>';
+                echo '<p><b>Fecha de inicio :</b> ' . $fila["fecha_pub_inicio"] . '</p>';
+                echo '<p><b>Fecha de fin:</b> ' . $fila["fecha_pub_fin"] . '</p>';
+                echo '<p><b>Publicado el:</b> ' . $fila["fecha_subida"] . '</p>';
 				// Mostrar servicios incluidos
                 $servicios_incluidos = json_decode($fila['servicio'], true);
                 echo '<h3>Servicios incluidos:</h3>';
@@ -301,7 +278,7 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
 				
 					if ($result_solicitudes->num_rows > 0) {
 						echo "<table class='table'>";
-						echo "<thead><tr><th>Nombre del solicitante</th><th>Fecha de solicitud</th><th>Fecha de ingreso</th><th>Fecha de salida</th></tr></thead>";
+						echo "<thead class='bg-dark'><tr><th>Nombre del solicitante</th><th>Fecha de solicitud</th><th>Fecha de ingreso</th><th>Fecha de salida</th></tr></thead>";
 						echo "<tbody>";
 				
 						while ($row_solicitud = $result_solicitudes->fetch_assoc()) {
@@ -365,11 +342,12 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
                 echo '<div class="btn-group" role="group" aria-label="Botones">';
 
                 if ($esPropietario) {
-                    echo '<a href="modificar_publicacion.php?id=' . $id_publicacion . '" class="btn btn-primary">Modificar Oferta</a>';
-                    echo '<button type="button" class="btn btn-danger eliminar-oferta-button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="' . $id_publicacion . '">Eliminar Oferta</button>';
+                    echo '<a href="modificar_publicacion.php?id=' . $id_publicacion . '" class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Modificar Oferta</a>';
+                    echo '<button type="button" class="btn btn-danger eliminar-oferta-button" data-bs-toggle="modal" data-bs-target="#delete'.$id_publicacion.'"><i class="fa-solid fa-trash"></i> Eliminar Oferta</button>';
+            
                 }
 
-                echo '<a href="perfil_usuario.php?id=' . $fila['id_usuario'] . '" class="btn btn-primary">Visitar Perfil del Usuario</a>';
+                echo '<a href="perfil_usuario.php?id=' . $fila['id_usuario'] . '" class="btn bg-personalizado text-white"><i class="fa-solid fa-user"></i> Visitar Perfil del Usuario</a>';
                 echo '</div>';
                 echo '</div>';
 
@@ -408,43 +386,49 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
                 echo '<div id="reseñas" class="container mt-4">';
                 echo '<h2>Reseñas</h2>';
 
-                $sql_resenas = "SELECT r.*, u.nombre, u.foto FROM resenia r
+                $consultar_resenas= "SELECT r.*, u.nombre, u.foto FROM resena r
                                 INNER JOIN usuario u ON r.id_usuario = u.id
                                 WHERE r.id_publicacion = ?";
-                if ($stmt_resenas = mysqli_prepare($conexion, $sql_resenas)) {
-                    mysqli_stmt_bind_param($stmt_resenas, "i", $id_publicacion);
-                    if (mysqli_stmt_execute($stmt_resenas)) {
-                        $resultado_resenas = mysqli_stmt_get_result($stmt_resenas);
+                if ($buscar_resenas = mysqli_prepare($conexion, $consultar_resenas)) {
+                    mysqli_stmt_bind_param($buscar_resenas, "i", $id_publicacion);
+                    if (mysqli_stmt_execute($buscar_resenas)) {
+                        $resultado_resenas = mysqli_stmt_get_result($buscar_resenas);
                         if (mysqli_num_rows($resultado_resenas) > 0) {
-                            while ($fila_resena = mysqli_fetch_assoc($resultado_resenas)) {
+                            while ($resenas = mysqli_fetch_assoc($resultado_resenas)) {
                                 echo '<div class="card mb-3">';
                                 echo '<div class="card-header">';
-								echo '<img src="' . htmlspecialchars($fila_resena["foto"]) . '" alt="Foto de perfil" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">';
-                                echo '<strong><a href="perfil.php?id=' . $fila_resena["id_usuario"] . '">' . htmlspecialchars($fila_resena["nombre"]) . '</a></strong>';
-                                echo ' - Puntuación: ' . mostrarEstrellas($fila_resena["puntuacion"]);
-                                if (isset($_SESSION['id']) && $_SESSION['id'] == $fila_resena['id_usuario']) {
-                                    echo ' <button type="button" class="btn btn-sm btn-danger eliminar-resena-button" data-bs-toggle="modal" data-bs-target="#confirmDeleteReviewModal" data-reviewid="' . $fila_resena['id'] . '">Eliminar Reseña</button>';
-                                }
+								echo '<img src="' . htmlspecialchars($resenas["foto"]) . '" alt="Foto de perfil" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">';
+                                echo '<strong><a href="perfil_usuario.php?id=' . $resenas["id_usuario"] . '">' . htmlspecialchars($resenas["nombre"]) . '</a></strong>';
+                                echo ' - Puntuación: ' . Estrellas($resenas["puntuacion"])."&nbsp"."&nbsp";
                                 echo '</div>';
                                 echo '<div class="card-body">';
-                                echo '<p class="card-text">' . htmlspecialchars($fila_resena["comentario"]) . '</p>';
+                                echo '<p class="card-text">' . htmlspecialchars($resenas["comentario"]) . '</p>';
                                 echo '</div>';
-								$sql_respuesta = "SELECT respuesta FROM respuesta_resena WHERE id_resena = ?";
+								$sql_respuesta = "SELECT re.*, u.foto, u.nombre, u.apellido FROM respuesta_resena re INNER JOIN usuario u ON re.id_usuario=u.id WHERE re.id_resena = ?";
 								if ($stmt_respuesta = mysqli_prepare($conexion, $sql_respuesta)) {
-									mysqli_stmt_bind_param($stmt_respuesta, "i", $fila_resena['id']);
+									mysqli_stmt_bind_param($stmt_respuesta, "i", $resenas['id']);
 									if (mysqli_stmt_execute($stmt_respuesta)) {
 										$resultado_respuesta = mysqli_stmt_get_result($stmt_respuesta);
 										if ($fila_respuesta = mysqli_fetch_assoc($resultado_respuesta)) {
-											echo '<div class="card-footer">';
-											echo '<strong>Respuesta del propietario:</strong> ' . htmlspecialchars($fila_respuesta["respuesta"]);
-											echo '</div>';
+                                            echo "<ul style='list style: none;'>
+                                                    <li style='list style: none;'>
+                                                        <div class='card-header'>
+                                                        <img src='" . htmlspecialchars($fila_respuesta["foto"]) . "' alt='Foto de perfil' style='width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;'>
+                                                        <strong><a href='perfil_usuario.php?id=". $fila_respuesta['id_usuario'] . "'> " . htmlspecialchars($fila_respuesta["nombre"]) . "</a></strong>
+                                                        </div>
+                                                        <div class='card-body'>
+                                                            <p><strong>Respuesta: </strong>".$fila_respuesta['respuesta']."</p>
+                                                        </div>
+                                                    </li>
+                                                 </ul>";
+											
 										} else {
 											if (isset($_SESSION['id']) && $_SESSION['id'] == $fila['id_usuario']) {
 												echo "
 												<div class='mt-3 border rounded p-3'>  <!-- Añade estas clases para el estilo de cuadro -->
 													<h5>Responder a esta reseña:</h5>
-													<form action='procesar_respuestas.php' method='post' class='form-inline'>
-														<input type='hidden' name='id_resena' value='" . $fila_resena['id'] . "'>
+													<form method='POST' class='form-inline' action='./insertar_respuesta.php'>
+														<input type='hidden' name='id_resena' value='" . $resenas['id'] . "'>
 														<input type='hidden' name='id_usuario' value='" . $_SESSION['id'] . "'>
 														<input type='hidden' name='id_publicacion' value='" . $id_publicacion . "'>
 														<textarea name='respuesta' placeholder='Escribe tu respuesta...' class='form-control mr-2' rows='2'></textarea>
@@ -464,14 +448,14 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
                         } else {
                             echo '<p>No hay reseñas para esta oferta.</p>';
                         }
-                        mysqli_stmt_close($stmt_resenas);
+                        mysqli_stmt_close($buscar_resenas);
                     }
                 }
 
                 if (isset($_SESSION['id']) && !$esPropietario && !$yaHaResenado && $puedeResenar) {
                     echo '<div class="container mt-4">';
                     echo '<h3>Deja tu reseña</h3>';
-                        echo '<form action="insertar_resena.php" method="POST">';
+                        echo '<form method="POST" action="./insertar_resena.php">';
                         echo '<div class="form-group">';
                         echo '<label for="puntuacion">Puntuación (1-5 estrellas):</label>';
                         echo '<input type="number" class="form-control" id="puntuacion" name="puntuacion" min="1" max="5" required>';
@@ -509,64 +493,14 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
 mysqli_close($conexion);
 ?>
 
-<!-- Modal para confirmar la eliminación de la oferta -->
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar eliminación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ¿Estás seguro de que deseas eliminar esta oferta de alquiler? Esta acción no se puede deshacer.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <a href="#" id="confirmDeleteButton" class="btn btn-danger">Eliminar</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para confirmar la eliminación de la reseña -->
-<div class="modal fade" id="confirmDeleteReviewModal" tabindex="-1" aria-labelledby="confirmDeleteReviewModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmDeleteReviewModalLabel">Confirmar eliminación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ¿Estás seguro de que deseas eliminar esta reseña? Esta acción no se puede deshacer.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <a href="#" id="confirmDeleteReviewButton" class="btn btn-danger">Eliminar</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    // Configurar el botón de eliminación de oferta
-    $(document).on("click", ".eliminar-oferta-button", function () {
-        var id_oferta = $(this).data('id');
-        $("#confirmDeleteButton").attr("href", "detalles_publicacion.php?id=" + id_oferta + "&action=delete");
-    });
-
-    // Configurar el botón de eliminación de reseña
-    $(document).on("click", ".eliminar-resena-button", function () {
-        var reviewId = $(this).data('reviewid');
-        $("#confirmDeleteReviewButton").attr("href", "detalles_publicacion.php?id=<?php echo $id_publicacion; ?>&action=deleteReview&reviewId=" + reviewId);
-    });
-	
-</script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
-</div>
-<?php
-include('./pie.php');
-?>
+    <?php include './eliminar_publicacion1.php';?>
+    
+    <?php
+        include('./pie.php');
+    ?>
+    <script src="./js/sweetAlert2.js"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://kit.fontawesome.com/91e1aa86a3.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

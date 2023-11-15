@@ -181,7 +181,7 @@
                                 if (!is_array($servicios_incluidos)) {
                                     $servicios_incluidos = [];
                                 }
-                                $servicios = ["Cocina", "Piscina", "Spa", "Aire acondicionado", "Limpieza", "Internet", "Desayuno", "Merienda" , "Cena" , "Patio" , "Camaras de seguridad" , "Agua" ,"Garage", "Luz" ,"Baño" ,"Calefaccion"];
+                                $servicios = ["Cocina", "Piscina", "Aire acondicionado", "Limpieza", "Internet", "Patio" , "Camaras de seguridad" , "Agua" ,"Garage", "Luz" ,"Baño" ,"Calefaccion","Living","comedor"];
                                 foreach ($servicios as $servicio) {
                                     echo '<div class="form-check">';
                                     echo '<input class="form-check-input" type="checkbox" name="servicio[]" value="' . $servicio . '"' . (in_array($servicio, $servicios_incluidos) ? ' checked' : '') . '>';

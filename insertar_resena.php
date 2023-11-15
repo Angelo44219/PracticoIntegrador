@@ -12,7 +12,7 @@
         $comentario = $_POST["comentario"];
     
         // Consulta SQL para insertar la reseña en la base de datos
-        $sql = "INSERT INTO resenia (id_publicacion, id_usuario, puntuacion, comentario)
+        $sql = "INSERT INTO resena (id_publicacion, id_usuario, puntuacion, comentario)
                 VALUES (?, ?, ?, ?)";
         
         if ($stmt = mysqli_prepare($conexion, $sql)) {

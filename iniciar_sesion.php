@@ -23,7 +23,7 @@
         mysqli_stmt_store_result($stmt);
 
         if (mysqli_stmt_num_rows($stmt) == 1) {
-          mysqli_stmt_bind_result($stmt, $id, $nombre, $apellido, $contra_crip, $foto_perfil, $intereses, $bio, $admin, $certificacion); // Agregar $verificado
+          mysqli_stmt_bind_result($stmt, $id, $nombre, $apellido, $contra_crip, $foto_perfil, $intereses, $biografia, $admin, $certificacion); // Agregar $verificado
           if (mysqli_stmt_fetch($stmt)) {
             if (password_verify($contrasena, $contra_crip)) {
                         // Inicio de sesión exitoso
@@ -32,7 +32,7 @@
                 $_SESSION["apellido"] = $apellido;
                 $_SESSION["foto"] = $foto_perfil;
                 $_SESSION["intereses"] = $intereses;
-                $_SESSION["biografia"] = $bio;
+                $_SESSION["biografia"] = $biografia;
                 $_SESSION["admin"] = $admin;
                 $_SESSION["certificacion"] = $certificacion; // Establecer la variable de sesión 'verificado'
                 header("location: perfil_usuario.php");
@@ -41,20 +41,19 @@
             }
           }
         } else {
-            $errores[] = "El correo electrónico ingresado no está registrado. <a href='registrarse.php'>Registrarse</a>.";
+            $errores[] = "El correo electrónico ingresado no está registrado pero puede <a href='registrarse.php'> Registrarlo aqui </a>.";
         }
       } else {
-         $error_message = "Error al ejecutar la consulta.";
+         $errores[] = "Error al ejecutar la consulta.";
       }
 
       mysqli_stmt_close($stmt);
 
     } else {
-        $error_message = "Error de preparación de la consulta.";
+        $errores[] = "Error de preparación de la consulta.";
     }
   }
 
-  include './BD/cerrar_conexion.php';
 ?>
 
 <!doctype html>

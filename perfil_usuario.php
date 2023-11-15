@@ -12,19 +12,21 @@
         $id_mostrar_usuario= $_GET["id"];
     }
     
-    require_once './BD/conexion.php';
+    include './BD/conexion.php';
 
     $consulta= "SELECT * FROM usuario WHERE id = ?";
-    $stmt = $conexion->prepare($consulta);
-    $stmt->bind_param("i", $id_mostrar_usuario);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $usuario = $resultado->fetch_assoc();
+    $preparar_consulta=mysqli_prepare($conexion,$consulta);
+    mysqli_stmt_bind_param($preparar_consulta,"i", $id_mostrar_usuario);
+    mysqli_stmt_execute($preparar_consulta);
+    $resultado = mysqli_stmt_get_result($preparar_consulta);
+    $usuario = mysqli_fetch_assoc($resultado);
 
     if ($usuario) {
         $nombre = $usuario["nombre"];
         $apellido = $usuario["apellido"];
         $foto_perfil = $usuario["foto"];
+        $dni=$usuario["documento"];
+        $email=$usuario["email"];
         $intereses = $usuario["intereses"];
         $bio = $usuario["biografia"];
         $admin = $usuario["admin"];
@@ -34,15 +36,16 @@
     }
     $activo= ($id_mostrar_usuario != $_SESSION["id"]) ? "AND p.estado = 1" : "";
     $publicaciones = "
-        SELECT *
+        SELECT p.*,AVG(r.puntuacion) as avg_puntuacion
         FROM publicacion p
+        LEFT JOIN resena r ON p.id = r.id_publicacion
         WHERE p.id_usuario= ? $activo
         GROUP BY p.id
         ORDER BY p.fecha_subida DESC";
-    $stmt_alquileres = $conexion->prepare($publicaciones);
-    $stmt_alquileres->bind_param("i", $id_mostrar_usuario);
-    $stmt_alquileres->execute();
-    $publis = $stmt_alquileres->get_result();
+    $buscar_publicaciones =mysqli_prepare($conexion,$publicaciones);
+    mysqli_stmt_bind_param($buscar_publicaciones,"i", $id_mostrar_usuario);
+    mysqli_stmt_execute($buscar_publicaciones);
+    $publis = mysqli_stmt_get_result($buscar_publicaciones);
 
 ?>
 
@@ -56,7 +59,7 @@
     <link rel="stylesheet" href="./Estilos/Estilo.css" type="text/css">
 </head>
 <body>
-    <?php include 'cabecera.php'?>
+    <?php include 'cabecera.php';?>
 
     <div class="container mt-5">
         <div class="row">
@@ -66,19 +69,20 @@
                         <img src="<?php echo $foto_perfil; ?>" alt="Foto de Perfil" class="img-fluid rounded-circle mb-3" width="150" height="150">
                         <h4><?php echo $nombre . ' ' . $apellido; ?></h4>
                         <?php 
-                        echo ($usuario["certificacion"] == 1) ? '<img height=40 width=40 src="./Imagenes/verify_4458197.png" title="Usuario verificado">' : '';
+                        echo ($usuario["certificacion"] == 1) ? '<img height="40" width="40" src="./Imagenes/verify_4458197.png" title="Usuario verificado">' : '';
                         echo ($admin == 1) ? ' <img height=40 width=40 src="./Imagenes/user_567902.png" title="Administrador">' : ''; 
                         ?>
                     </div>
                 </div>
             <?php
                 $consultar_verificacion = "SELECT * FROM solicitud WHERE id_usuario = ?";
-                $stmt_verificacion = $conexion->prepare($consultar_verificacion);
-                $stmt_verificacion->bind_param("i", $id_mostrar_usuario);
-                $stmt_verificacion->execute();
-                $result_verificacion = $stmt_verificacion->get_result();
-                $esperando_verificacion = ($result_verificacion->num_rows > 0);
-                $stmt_verificacion->close();
+                $solcitud_verificacion=mysqli_prepare($conexion,$consultar_verificacion);
+                mysqli_stmt_bind_param($solcitud_verificacion,"i", $id_mostrar_usuario);
+                mysqli_stmt_execute($solcitud_verificacion);
+                $resultados_verificacion=mysqli_stmt_get_result($solcitud_verificacion);
+                $resultado_verificacion=mysqli_num_rows($resultados_verificacion);
+                $esperando_verificacion = (($resultado_verificacion)> 0);
+                mysqli_stmt_close($solcitud_verificacion);
             ?>
 
             <!--[Verificacion]-->
@@ -90,28 +94,9 @@
                         <div class="alert alert-info mt-4">Esperando verificación.</div>
                     </div>
                 <?php else: ?>
-                <div class="card mt-4 card_usuario">
-                    <div class="card-header text-white text-center bg-personalizado">
-                        <b>Verifica tu cuenta</b>
-                    </div>
+                <div class="card mt-4 card_usuario text-center">
                     <div class="card-body card_usuario">
-                        <form action="procesar_solicitud.php" method="post" enctype="multipart/form-data">
-                            <div class="upload-box mb-3">
-                                <label class="upload-label" for="dni_frente">Foto Frente DNI</label>
-                                <span class="upload-icon"><i class="fa-solid fa-camera"></i></span>
-                                <input type="file" id="dni_frente" name="dni_frente" class="upload-input">
-                            </div>
-                            
-                            <div class="upload-box mb-3">
-                                <label class="upload-label" for="dni_dorso">Foto Dorso DNI</label>
-                                <span class="upload-icon"><i class="fa-solid fa-camera"></i></span>
-                                <input type="file" id="dni_dorso" name="dni_dorso" class="upload-input">
-                            </div>
-        
-                            <div class="text-center">
-                            <button type="submit" class="btn btn-primary btn-enviar">Enviar Documentación</button>
-                            </div>
-                        </form>
+                        <button type="button"class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Solicitar<?php echo $id_mostrar_usuario;?>">Solicitar Verificacion</button>
                     </div>
                 </div>
                 <?php endif; ?>
@@ -132,9 +117,9 @@
                 <?php endif; ?>
             </div>
             <div class="col-md-12">
-                <div class="card mb-4 card_usuario"> 
+                <div class="card mb-3 card_usuario"> 
                     <div class="card-header bg-dark text-white">
-                        <h2>Perfil de Usuario</h2>
+                        <h2>Información general</h2>
                     </div>
                     <div class="card-body card_usuario">
                         <div class="mb-3">
@@ -144,6 +129,14 @@
                         <div>
                             <h5>Biografía</h5>
                             <p><?php echo $bio; ?></p>
+                        </div>
+                        <div>
+                            <h5>Dni</h5>
+                            <p><?php echo $dni; ?></p>
+                        </div>
+                        <div>
+                            <h5>Correo electronico</h5>
+                            <p><?php echo $email; ?></p>
                         </div>
                     </div>
                     <div class="card card_usuario">
@@ -164,17 +157,17 @@
                                                     <span class="badge bg-secondary">Inactiva</span>
                                                 <?php endif; ?>
                                             </h5>
-                                            <!--<small>
+                                            <small>
                                                 <?php 
-                                                $estrellas = round($oferta["avg_puntuacion"]);
+                                                $estrellas = round($publicacion["avg_puntuacion"]);
                                                 for ($i = 1; $i <= 5; $i++): 
                                                     if ($i <= $estrellas): ?>
-                                                        <img src="estrella.png" alt="Estrella">
+                                                        <i class="fa-solid fa-star"></i>
                                                     <?php else: ?>
-                                                        <img src="noestrella.png" alt="No Estrella">
+                                                        <i class="fa-regular fa-star"></i>
                                                     <?php endif; 
                                                 endfor; ?>
-                                            </small>-->
+                                            </small>
                                         </div>
                                     </a>
                                     <?php endwhile; ?>
@@ -188,6 +181,44 @@
             </div>      
         </div>
     </div>
+
+     <!-- Modal -->
+    <div class="modal fade" id="Solicitar<?php echo $id_mostrar_usuario;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+        <div class="modal-header text-white bg-personalizado">
+            <h5 class="modal-title" id="exampleModalLabel">Solicitar verificacion de Cuenta</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+            <div class="col-md-12">
+                <form action="procesar_solicitud.php" method="post" enctype="multipart/form-data">
+                    <div class="upload-box mb-3">
+                        <label class="upload-label" for="dni_frente">Foto Frente DNI</label>
+                        <span class=""><i class="fa-solid fa-camera"></i></span>
+                        <input type="file" id="dni_frente" name="dni_frente" class="upload-input">
+                    </div>
+                                    
+                    <div class="upload-box mb-3">
+                        <label class="" for="dni_dorso">Foto Dorso DNI</label>
+                        <span class=""><i class="fa-solid fa-camera"></i></span>
+                        <input type="file" id="dni_dorso" name="dni_dorso" class="upload-input">
+                    </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <input type="hidden" name="enviar_solicitud" value="<?php $id_mostrar_usuario?>">'
+            <button type="submit" class="btn btn-primary">Enviar documentacion</button>
+          </form>
+        </div>
+        </div>
+    </div>
+    </div>                               
+
+
+
+
 
     <?php include 'pie.php'?>
     <!--[Scripts]-->

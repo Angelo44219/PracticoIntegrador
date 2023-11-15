@@ -32,12 +32,12 @@
         move_uploaded_file($_FILES["dni_dorso"]["tmp_name"], "documentacion/" . $dni_dorso);
 
         // Guardar las rutas en la base de datos
-        $sql = "INSERT INTO solicitud (id_usuario, dni_frente, dni_dorso) VALUES (?, ?, ?)";
-        $stmt = $conexion->prepare($sql);
-        $stmt->bind_param("iss", $id_usuario, $dni_frente, $dni_dorso);
-        $stmt->execute();
+        $solicitud = "INSERT INTO solicitud (id_usuario, dni_frente, dni_dorso) VALUES (?, ?, ?)";
+        $procesar_solicitud=mysqli_prepare($conexion,$solicitud);
+        mysqli_stmt_bind_param($procesar_solicitud,"iss", $id_usuario, $dni_frente, $dni_dorso);
+        mysqli_stmt_execute($procesar_solicitud);
 
-        if ($stmt->affected_rows == 1) {
+        if (mysqli_stmt_affected_rows($procesar_solicitud) == 1) {
             header("location: perfil_usuario.php");
         } else {
             header("location: perfil_usuario.php?error=Hubo un error al enviar los documentos.");

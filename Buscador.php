@@ -15,9 +15,13 @@
     <div class="container search-container">
       <div class="col-mb-6">
         <div class="busqueda">
-          <input type="text" placeholder="Por favor ingrese su Busqueda" name="buscador" id="buscador">
-          <div class="boton_busqueda">
-              <i class="fa-solid fa-magnifying-glass"></i>
+          
+          <!--<div class="boton_busqueda">
+              
+          </div>-->
+          <div class="busqueda input-group">
+              <input type="text" class="form-control" placeholder="Por favor ingrese su Busqueda" name="buscador" id="buscador">
+              <span class="input-group-text bg-secondary text-white"><i class="fa-solid fa-magnifying-glass"></i></span>
           </div>
         </div>            
       </div>

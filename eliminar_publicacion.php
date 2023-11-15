@@ -11,7 +11,7 @@
     // Verificar si se proporcionó un ID de alquiler válido en la URL
     if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $idPublicacion = $_GET['id'];
-    
+        
         // Consulta SQL para verificar si el usuario actual es el propietario del alquiler
         $sql = "SELECT id_usuario FROM publicacion WHERE id = ?";
     

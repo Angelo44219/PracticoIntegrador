@@ -18,28 +18,28 @@
       echo "<br>";
       if(mysqli_num_rows($resultado) > 0){
         while($fila=mysqli_fetch_assoc($resultado)){
-          echo  "<div class='card mb-4'>";
-            echo "<div class='row g-0'>";
-              echo "<div class='col-md-4'>";
-                echo  "<img src='".htmlspecialchars($fila['fotos'])."' class='img-thumbnail img-fluid' alt='...' width='100%' height='225'>";
-              echo "</div>";
-
-              echo "<div class='col-md-8'>";
-                echo  "<div class='card-body'>";
-                      echo  "<h4 class='card-title'><strong>".htmlspecialchars($fila['titulo'])."</strong></h4>";
-                      echo  "<p class='card-text'>".htmlspecialchars($fila['descripcion']).".</p>";
-                      echo  "<p class='card-text'><small class='text-bold'>Ubicacion: ".htmlspecialchars($fila['ubicacion'])."</small></p>";
-                      echo  "<p class='card-text'><small class='text-bold'>Etiquetas: ".htmlspecialchars($fila['etiqueta'])."</small></p>";
-                      echo  "<p class='card-text'><small class='text-bold'>Costo por dia: ".number_format($fila['costo'],2,'.',',')."</small></p>";
-                      echo  "<p class='card-text'><small class='text-muted'>Publicado por : ".htmlspecialchars($fila['nombre'])."  ".htmlspecialchars($fila['apellido'])."</small></p>";
-                      echo  "<p class='card-text'><small class='text-muted'>Subido el : ".date($fila['fecha_subida'])."</small></p>";
-                      
-                      echo  "<a href='detalles_publicacion.php?id=".$fila['id']."' class='btn btn-primary btn-sm'>Ver alquiler</a>";
-
-                echo  "</div>";
-              echo "</div>";
-            echo  "</div>";
-          echo  "</div>";
+          echo '<div class="card mb-4">';
+            echo '<div class="row g-0">';
+              echo '<div class="col-md-4">';
+                echo '<img src="' . json_decode($fila["fotos"])[0] . '" class="img-thumbnail" alt="Imagen del alquiler">';
+              echo '</div>';
+              echo '<div class="col-md-8">';
+                echo '<div class="card-body">';
+                  echo '<h3 class="card-title">' . htmlspecialchars($fila["titulo"]) . '</h3>';
+                  echo '<p class="card-text">' . htmlspecialchars($fila["descripcion"]) . '</p>';
+                  echo '<p class="card-text"><strong>Ubicación:</strong> ' . htmlspecialchars($fila["ubicacion"]) . '</p>';
+                  $etiquetas = explode(',', $fila["etiqueta"]);
+                  echo '<p><strong>Etiquetas:</strong> ';
+                    foreach ($etiquetas as $q) {
+                      $q = trim($q);
+                      echo '<a href="Buscador.php?q=' . urlencode($q) . '" class="q">#' . htmlspecialchars($q) . '</a> ';
+                    }
+                  echo '</p>';
+                  echo '<a href="detalles_publicacion.php?id=' . $fila["id"] . '" class="btn btn-primary">Ver Detalles</a>';
+                echo '</div>';
+              echo '</div>';
+            echo '</div>';
+          echo '</div>';
           }
         }else{
           echo "
